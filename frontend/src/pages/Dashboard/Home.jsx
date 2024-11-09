@@ -41,9 +41,9 @@ export default function HomePage() {
 
   const fetchData = async () => {
     try {
-      const result = await axios.get('http://18.139.85.186/get/cv');
-      const jds = await axios.get('http://18.139.85.186/get/jd');
-      const projects = await axios.get('http://18.139.85.186/get/project');
+      const result = await axios.get('http://18.142.57.218/get/cv');
+      const jds = await axios.get('http://18.142.57.218/get/jd');
+      const projects = await axios.get('http://18.142.57.218/get/project');
 
       const mappedAnalyze = projects.data.map((item) => ({
         id: item.cv_id,
@@ -106,7 +106,7 @@ export default function HomePage() {
 
 
   async function handleDeleteProject(id){
-   const result = await  axios.delete(`http://18.139.85.186/get/delete_project?project_id=${id}`);
+   const result = await  axios.delete(`http://18.142.57.218/get/delete_project?project_id=${id}`);
    if(result.data.message === "Project deleted successfully"){
      await fetchData();
      successNotify({

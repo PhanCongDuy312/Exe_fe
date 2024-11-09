@@ -22,7 +22,7 @@ export default function SharedProjectPage() {
     const successNotify = useNotification({ type: "success" });
     const fetchData = async () => {
         try {
-            const result = await axios.get('http://18.139.85.186/get/jd');
+            const result = await axios.get('http://18.142.57.218/get/jd');
 
             // Assuming result.data contains the array
             const mappedProjects = result.data.map((item) => ({
@@ -58,7 +58,7 @@ export default function SharedProjectPage() {
     } = useSearch(projects, handleSearchProjects);
 
     async function handleDeleteProject(id){
-        const result = await  axios.delete(`http://18.139.85.186/get/delete_jd?jd_id=${id}`);
+        const result = await  axios.delete(`http://18.142.57.218/get/delete_jd?jd_id=${id}`);
         if(result.data.message === "JD deleted successfully"){
             await fetchData();
             successNotify({
