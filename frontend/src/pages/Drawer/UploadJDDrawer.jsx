@@ -4,7 +4,7 @@ import {
 
     Button,
     Title,
-    Container, FileInput,
+    Container, FileInput, Input,
 } from "@mantine/core";
 import appStrings from "../../utils/strings";
 
@@ -37,7 +37,7 @@ export default function UploadJDDrawer({ open, onClose }) {
         setIsLoading(true);
 
         try {
-            const response = await axios.post('http://0.0.0.0:8000/upload/jd/', formData, {
+            const response = await axios.post('http://18.139.85.186/upload/jd/', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -66,7 +66,11 @@ export default function UploadJDDrawer({ open, onClose }) {
                     <Title order={1} style={{ width: "100%" }}>
                         {"Thêm JD của bạn"}
                     </Title>
-
+                    <Input.Wrapper
+                        style={{ width: "100%" }}
+                        label="Đặt tên cho JD của bạn" >
+                        <Input placeholder="JD Công Ty FPT " />
+                    </Input.Wrapper>
                     <FileInput
                         label={"Upload JD của bạn tại đây"}
                         style={{ width: "100%" }}

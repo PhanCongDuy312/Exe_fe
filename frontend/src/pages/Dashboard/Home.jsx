@@ -1,6 +1,6 @@
-import { Flex, Title, Button } from "@mantine/core";
+import {Flex, Title, Button, Modal} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconPlus } from "@tabler/icons-react";
+import {IconPlus, IconQrcode} from "@tabler/icons-react";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import GridLayout from "../../components/Layout/GridLayout";
 import ProjectCard from "../../components/ProjectCard";
@@ -19,6 +19,7 @@ import { shareProjectApi } from "../../apis/projects";
 import ShareProjectModal from "../Modal/ShareProjectModal";
 import { findUsersByEmailApi } from "../../apis/user";
 import axios from "axios";
+import {openModal} from "@mantine/modals";
 
 export default function HomePage() {
   const [isNewProjectOpen, newProjectToggle] = useDisclosure(false);
@@ -36,12 +37,13 @@ export default function HomePage() {
   const [fileNames, setFileNames] = useState([]);
   const [jdNames, setJDNames] = useState([]);
   const [projects, setProjects] = useState([]); // State to hold projects
+  const [openModal, setOpenModal] = useState(false);
 
   const fetchData = async () => {
     try {
-      const result = await axios.get('http://0.0.0.0:8000/get/cv');
-      const jds = await axios.get('http://0.0.0.0:8000/get/jd');
-      const projects = await axios.get('http://0.0.0.0:8000/get/project');
+      const result = await axios.get('http://18.139.85.186/get/cv');
+      const jds = await axios.get('http://18.139.85.186/get/jd');
+      const projects = await axios.get('http://18.139.85.186/get/project');
 
       const mappedAnalyze = projects.data.map((item) => ({
         id: item.cv_id,
@@ -104,7 +106,7 @@ export default function HomePage() {
 
 
   async function handleDeleteProject(id){
-   const result = await  axios.delete(`http://0.0.0.0:8000/get/delete_project?project_id=${id}`);
+   const result = await  axios.delete(`http://18.139.85.186/get/delete_project?project_id=${id}`);
    if(result.data.message === "Project deleted successfully"){
      await fetchData();
      successNotify({
@@ -128,81 +130,88 @@ export default function HomePage() {
   }
 
   return (
-    <Flex direction="column" gap={30}>
-      <HeadingLayout loading={user}>
-        <Title order={1}>
-          {appStrings.language.home.welcome}
-          {user?.name}
-        </Title>
-        <Flex>
-          <Button
-            leftSection={<IconPlus size="1rem" />}
-            onClick={newAnalystToggle.open}
-          >
-            {"Phân tích mới"}
-          </Button>
+      <>
+        <Modal opened={openModal} onClose={() => setOpenModal(false)}>
+
+
+        </Modal>
+        <Flex direction="column" gap={30}>
+          <HeadingLayout loading={user}>
+            <Title order={1}>
+              {appStrings.language.home.welcome}
+              {user?.name}
+            </Title>
+            <Flex gap={5}>
+              <Button
+                  leftSection={<IconPlus size="1rem" />}
+                  onClick={newAnalystToggle.open}
+              >
+                {"Phân tích mới"}
+              </Button>
+            </Flex>
+          </HeadingLayout>
+          {projects?.length !== 0 ? (
+              <GridLayout
+                  title={"Những phân tích gần đây"}
+                  loading={!projects}
+              >
+                {projects?.map((data, index) => (
+                    <ProjectCard
+                        key={index}
+                        id={data.id}
+                        title={data.title}
+                        alias={data.alias}
+                        keyword={data.description}
+                        actions={
+                          <YourProjectAction
+                              onShareTap={() => {
+                                setIsShareModalOpen.open();
+                                setSelectedShareProject(index);
+                              }}
+                              onDeleteTap={() => handleDeleteProject(data.id)}
+                          />
+                        }
+                    />
+                ))}
+              </GridLayout>
+          ) : !shared?.length ? (
+              <Empty />
+          ) : null}
+          {/*{shared?.length !== 0 ? (*/}
+          {/*  <GridLayout*/}
+          {/*    title={appStrings.language.home.sharedProjects}*/}
+          {/*    loading={shared}*/}
+          {/*  >*/}
+          {/*    {shared?.map((data, index) => (*/}
+          {/*      <ProjectCard*/}
+          {/*        key={index}*/}
+          {/*        id={data.id}*/}
+          {/*        title={data.name}*/}
+          {/*        description={data.description}*/}
+          {/*        alias={data.alias}*/}
+          {/*        members={data.members}*/}
+          {/*      />*/}
+          {/*    ))}*/}
+          {/*  </GridLayout>*/}
+          {/*) : null}*/}
+          <CreateProjectDrawer
+              open={isNewProjectOpen}
+              onClose={newProjectToggle.close}
+          />
+          <AnalyzeProfileDrawer
+              open={isNewAnalyst}
+              onClose={newAnalystToggle.close}
+              fileNames={fileNames}
+              jdNames={jdNames}
+          />
+          <ShareProjectModal
+              open={isShareModalOpen}
+              onClose={setIsShareModalOpen.close}
+              onSearch={async (query) => findUsersByEmailApi(query)}
+              onShare={handleShareProject}
+          />
         </Flex>
-      </HeadingLayout>
-      {projects?.length !== 0 ? (
-        <GridLayout
-          title={"Những phân tích gần đây"}
-          loading={!projects}
-        >
-          {projects?.map((data, index) => (
-            <ProjectCard
-              key={index}
-              id={data.id}
-              title={data.title}
-              alias={data.alias}
-              keyword={data.description}
-              actions={
-                <YourProjectAction
-                  onShareTap={() => {
-                    setIsShareModalOpen.open();
-                    setSelectedShareProject(index);
-                  }}
-                  onDeleteTap={() => handleDeleteProject(data.id)}
-                />
-              }
-            />
-          ))}
-        </GridLayout>
-      ) : !shared?.length ? (
-        <Empty />
-      ) : null}
-      {/*{shared?.length !== 0 ? (*/}
-      {/*  <GridLayout*/}
-      {/*    title={appStrings.language.home.sharedProjects}*/}
-      {/*    loading={shared}*/}
-      {/*  >*/}
-      {/*    {shared?.map((data, index) => (*/}
-      {/*      <ProjectCard*/}
-      {/*        key={index}*/}
-      {/*        id={data.id}*/}
-      {/*        title={data.name}*/}
-      {/*        description={data.description}*/}
-      {/*        alias={data.alias}*/}
-      {/*        members={data.members}*/}
-      {/*      />*/}
-      {/*    ))}*/}
-      {/*  </GridLayout>*/}
-      {/*) : null}*/}
-      <CreateProjectDrawer
-        open={isNewProjectOpen}
-        onClose={newProjectToggle.close}
-      />
-      <AnalyzeProfileDrawer
-          open={isNewAnalyst}
-          onClose={newAnalystToggle.close}
-          fileNames={fileNames}
-          jdNames={jdNames}
-      />
-      <ShareProjectModal
-        open={isShareModalOpen}
-        onClose={setIsShareModalOpen.close}
-        onSearch={async (query) => findUsersByEmailApi(query)}
-        onShare={handleShareProject}
-      />
-    </Flex>
+
+      </>
   );
 }

@@ -2,6 +2,7 @@ import { Avatar, Menu, Text, Title, Skeleton } from "@mantine/core";
 import { IconLogout, IconSettings } from "@tabler/icons-react";
 import useGlobalState from "../../context/global";
 import appStrings from "../../utils/strings";
+import ava from "../../assets/ava.jpg"
 
 export default function User({ onUserTap, onSettingTap, onLogoutTap }) {
   const user = useGlobalState((state) => state.user);
@@ -9,7 +10,7 @@ export default function User({ onUserTap, onSettingTap, onLogoutTap }) {
   return (
     <Menu shadow="md" width={250}>
       <Menu.Target>
-        {user ? <Avatar src={user.avatar} /> : <Skeleton circle height={40} />}
+        {user ? <Avatar src={user.avatar} /> : <Avatar />}
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item onClick={onUserTap}>

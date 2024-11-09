@@ -7,7 +7,14 @@ import {
   IconTrash,
   IconTrashFilled,
   IconSettings,
-  IconSettingsFilled, IconGraph, IconGraphFilled, IconFileTypeDoc, IconFileTypePdf, IconFileCv,
+  IconSettingsFilled,
+  IconGraph,
+  IconGraphFilled,
+  IconFileTypeDoc,
+  IconFileTypePdf,
+  IconFileCv,
+  IconQrcode,
+  IconQrcodeOff,
 } from "@tabler/icons-react";
 import appStrings from "../../utils/strings";
 
@@ -16,10 +23,11 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { getCurrentUserApi } from "../../apis/auth";
 import useNotification from "../../hooks/useNotification";
+import {Modal} from "@mantine/core";
 
 const navbarItems = [
   {
-    label: appStrings.language.home.title,
+    label: "Dự án",
     icon: <IconHome size="1rem" />,
     activeIcon: <IconHomeFilled size="1rem" />,
     to: "/dashboard",
@@ -36,10 +44,11 @@ const navbarItems = [
     activeIcon: <IconFileTypePdf size="1rem" />,
     to: "/dashboard/shared-project",
   },
+
   {
-    label: "Kết quả",
-    icon: <IconGraph size="1rem" />,
-    activeIcon: <IconGraphFilled size="1rem" />,
+    label: "Thanh toán",
+    icon: <IconQrcodeOff size="1rem" />,
+    activeIcon: <IconQrcode size="1rem" />,
     to: "/dashboard/deleted-project",
   },
 ];
