@@ -1,23 +1,23 @@
 import {Flex, Title, Button, Modal} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {IconPlus, IconQrcode} from "@tabler/icons-react";
-import HeadingLayout from "../../components/Layout/HeadingLayout.jsx";
-import GridLayout from "../../components/Layout/GridLayout.jsx";
-import ProjectCard from "../../components/ProjectCard/index.jsx";
-import appStrings from "../../utils/strings.js";
-import YourProjectAction from "../../components/Actions/YourProjectAction.jsx";
-import CreateProjectDrawer from "../Drawer/CreateProjectDrawer.jsx";
+import HeadingLayout from "../../components/Layout/HeadingLayout";
+import GridLayout from "../../components/Layout/GridLayout";
+import ProjectCard from "../../components/ProjectCard";
+import appStrings from "../../utils/strings";
+import YourProjectAction from "../../components/Actions/YourProjectAction";
+import CreateProjectDrawer from "../Drawer/CreateProjectDrawer";
 import AnalyzeProfileDrawer from "../Drawer/AnalyzeProfileDrawer.jsx";
-import Empty from "../../components/Empty/index.jsx";
+import Empty from "../../components/Empty";
 
 import { useEffect, useState } from "react";
-import useGlobalState from "../../context/global.js";
-import useProjectsState from "../../context/project.js";
-import useNotification from "../../hooks/useNotification.js";
+import useGlobalState from "../../context/global";
+import useProjectsState from "../../context/project";
+import useNotification from "../../hooks/useNotification";
 
-import { shareProjectApi } from "../../apis/projects.js";
-import ShareProjectModal from "../Modal/ShareProjectModal.jsx";
-import { findUsersByEmailApi } from "../../apis/user.js";
+import { shareProjectApi } from "../../apis/projects";
+import ShareProjectModal from "../Modal/ShareProjectModal";
+import { findUsersByEmailApi } from "../../apis/user";
 import axios from "axios";
 import {openModal} from "@mantine/modals";
 

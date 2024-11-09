@@ -1,7 +1,7 @@
 import {Flex, Title, Button, Input, Loader} from "@mantine/core";
 import {IconPlus, IconSearch} from "@tabler/icons-react";
-import HeadingLayout from "../../components/Layout/HeadingLayout.jsx";
-import GridLayout from "../../components/Layout/GridLayout.jsx";
+import HeadingLayout from "../../components/Layout/HeadingLayout";
+import GridLayout from "../../components/Layout/GridLayout";
 
 import {useEffect, useState} from "react";
 import UploadJDDrawer from "../Drawer/UploadJDDrawer.jsx";

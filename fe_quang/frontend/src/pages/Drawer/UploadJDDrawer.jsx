@@ -6,7 +6,7 @@ import {
     Title,
     Container, FileInput, Input,
 } from "@mantine/core";
-import appStrings from "../../utils/strings.js";
+import appStrings from "../../utils/strings";
 
 
 import { useState } from "react";

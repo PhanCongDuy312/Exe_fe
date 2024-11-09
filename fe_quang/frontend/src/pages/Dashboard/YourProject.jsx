@@ -1,22 +1,22 @@
 import { Title, Flex, Button, Input, Loader } from "@mantine/core";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
-import HeadingLayout from "../../components/Layout/HeadingLayout.jsx";
-import GridLayout from "../../components/Layout/GridLayout.jsx";
-import ProjectCard from "../../components/ProjectCard/index.jsx";
-import CreateProjectDrawer from "../Drawer/CreateProjectDrawer.jsx";
-import YourProjectAction from "../../components/Actions/YourProjectAction.jsx";
-import Empty from "../../components/Empty/index.jsx";
-import appStrings from "../../utils/strings.js";
+import HeadingLayout from "../../components/Layout/HeadingLayout";
+import GridLayout from "../../components/Layout/GridLayout";
+import ProjectCard from "../../components/ProjectCard";
+import CreateProjectDrawer from "../Drawer/CreateProjectDrawer";
+import YourProjectAction from "../../components/Actions/YourProjectAction";
+import Empty from "../../components/Empty";
+import appStrings from "../../utils/strings";
 
 import { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import useProjectsState from "../../context/project.js";
-import { getYourProjectsApi, getTrashProjectsApi } from "../../apis/dashboard.js";
-import { deleteProjectApi, shareProjectApi } from "../../apis/projects.js";
-import useNotification from "../../hooks/useNotification.js";
-import useSearch from "../../hooks/useSearch.js";
-import ShareProjectModal from "../Modal/ShareProjectModal.jsx";
-import { findUsersByEmailApi } from "../../apis/user.js";
+import useProjectsState from "../../context/project";
+import { getYourProjectsApi, getTrashProjectsApi } from "../../apis/dashboard";
+import { deleteProjectApi, shareProjectApi } from "../../apis/projects";
+import useNotification from "../../hooks/useNotification";
+import useSearch from "../../hooks/useSearch";
+import ShareProjectModal from "../Modal/ShareProjectModal";
+import { findUsersByEmailApi } from "../../apis/user";
 import axios from "axios";
 import CVCard from "../../components/ProjectCard/CVCard.jsx";
 

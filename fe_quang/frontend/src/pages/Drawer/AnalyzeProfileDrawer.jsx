@@ -6,7 +6,7 @@ import {
     Title,
     Container, Input, rem
 } from "@mantine/core";
-import appStrings from "../../utils/strings.js";
+import appStrings from "../../utils/strings";
 import {useState} from "react";
 import axios from "axios";
 import useNotification from "../../hooks/useNotification.js";
