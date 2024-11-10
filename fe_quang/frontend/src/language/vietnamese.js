@@ -23,7 +23,7 @@ const vietnamese = {
   },
   home: {
     title: "Trang chủ",
-    welcome: "Chào mừng ",
+    welcome: "Dự án của bạn",
     createBtn: "Tạo dự án mới",
     recentProjects: "Dự án Gần đây",
     sharedProjects: "Dự án Đã Chia sẻ",

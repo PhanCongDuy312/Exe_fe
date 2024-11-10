@@ -72,7 +72,7 @@ export default function CreateProjectDrawer({ open, onClose }) {
     <Flex gap="lg" justify="center" align="center" direction="column" wrap="wrap">
       <Title order={1} style={{ width: "100%" }}>{"Thêm CV của bạn"}</Title>
       <Input.Wrapper style={{ width: "100%" }} label="Đặt tên cho CV của bạn">
-        <Input placeholder="CV Sinh Viên FPT" />
+        <Input placeholder="Vd: CV Sinh Viên FPT" />
       </Input.Wrapper>
       <FileInput
         label={"Upload CVs của bạn tại đây"}

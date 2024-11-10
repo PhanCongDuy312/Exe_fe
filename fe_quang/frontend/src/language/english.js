@@ -23,7 +23,7 @@ const english = {
   },
   home: {
     title: "Home",
-    welcome: "Welcome ",
+    welcome: "Dự án của bạn",
     createBtn: "Create new project",
     recentProjects: "Recent Projects",
     sharedProjects: "Shared Projects",

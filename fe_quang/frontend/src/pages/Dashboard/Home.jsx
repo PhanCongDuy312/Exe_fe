@@ -165,7 +165,6 @@ export default function HomePage() {
           </HeadingLayout>
           {projects?.length !== 0 ? (
               <GridLayout
-                  title={"Những phân tích gần đây"}
                   loading={!projects}
               >
                 {projects?.map((data, index) => (

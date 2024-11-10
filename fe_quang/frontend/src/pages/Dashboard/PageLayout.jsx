@@ -15,6 +15,7 @@ import {
   IconFileCv,
   IconQrcode,
   IconQrcodeOff,
+  IconBriefcase,
 } from "@tabler/icons-react";
 import appStrings from "../../utils/strings";
 
@@ -28,8 +29,8 @@ import {Modal} from "@mantine/core";
 const navbarItems = [
   {
     label: "Dự án",
-    icon: <IconHome size="1rem" />,
-    activeIcon: <IconHomeFilled size="1rem" />,
+    icon: <IconBriefcase size="1rem" />,
+    activeIcon: <IconBriefcase size="1rem" />,
     to: "/dashboard",
   },
   {
@@ -47,7 +48,7 @@ const navbarItems = [
 
   {
     label: "Thanh toán",
-    icon: <IconQrcodeOff size="1rem" />,
+    icon: <IconQrcode size="1rem" />,
     activeIcon: <IconQrcode size="1rem" />,
     to: "/dashboard/deleted-project",
   },

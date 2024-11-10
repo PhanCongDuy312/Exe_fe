@@ -70,7 +70,7 @@ export default function UploadJDDrawer({ open, onClose }) {
     <Flex gap="lg" justify="center" align="center" direction="column" wrap="wrap">
       <Title order={1} style={{ width: "100%" }}>{"Thêm JD của bạn"}</Title>
       <Input.Wrapper style={{ width: "100%" }} label="Đặt tên cho JD của bạn">
-        <Input placeholder="JD Công Ty FPT " />
+        <Input placeholder="Vd: JD Công Ty FPT " />
       </Input.Wrapper>
       <FileInput
         label={"Upload JD của bạn tại đây"}

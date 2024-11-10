@@ -2,6 +2,7 @@ import {Flex, Title, Button, Input, Loader} from "@mantine/core";
 import {IconPlus, IconSearch} from "@tabler/icons-react";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import GridLayout from "../../components/Layout/GridLayout";
+import Empty from "../../components/Empty";
 
 import {useEffect, useState} from "react";
 import UploadJDDrawer from "../Drawer/UploadJDDrawer.jsx";
@@ -82,46 +83,51 @@ export default function SharedProjectPage() {
     }
 
   return (
-    <Flex direction="column" gap={30}>
-      <HeadingLayout loading={!currentProjects}>
-        <Title order={2}>{"JDs của bạn"}</Title>
-        <Flex gap={15}>
-            <Input
-                placeholder={appStrings.language.yourProject.searchPlaceholder}
-                leftSection={
-                    isSearching ? <Loader size="1rem" /> : <IconSearch size="1rem" />
-                }
-                onChange={(e) => handleSearch(e.currentTarget.value)}
-            />
-          <Button
-              leftSection={<IconPlus size="1rem" />}
-              onClick={isNewProjectToggle.open}
-          >
-            {"Thêm JD mới"}
-          </Button>
-        </Flex>
-      </HeadingLayout>
-      <GridLayout
-          loading={!currentProjects}
-      >
-        {currentProjects?.map((data, index) => (
-            <JDCard
-                key={index}
-                id={data.id}
-                title={data.name}
-                description={data.description}
-                actions={
-                    <YourProjectAction
-                        onDeleteTap={() => handleDeleteProject(data.id)}
-                    />
-                }
-            />
-        ))}
-      </GridLayout>
-      <UploadJDDrawer
-          open={isNewProjectOpen}
-          onClose={isNewProjectToggle.close}
+<Flex direction="column" gap={30}>
+  <HeadingLayout loading={!currentProjects}>
+    <Title order={2}>{"JDs của bạn"}</Title>
+    <Flex gap={15}>
+      <Input
+        placeholder={appStrings.language.yourProject.searchPlaceholder}
+        leftSection={
+          isSearching ? <Loader size="1rem" /> : <IconSearch size="1rem" />
+        }
+        onChange={(e) => handleSearch(e.currentTarget.value)}
       />
+      <Button
+        leftSection={<IconPlus size="1rem" />}
+        onClick={isNewProjectToggle.open}
+      >
+        {"Thêm JD mới"}
+      </Button>
     </Flex>
+  </HeadingLayout>
+
+  {currentProjects?.length !== 0 ? (
+    <GridLayout loading={!currentProjects}>
+      {currentProjects?.map((data, index) => (
+        <JDCard
+          key={index}
+          id={data.id}
+          title={data.name}
+          description={data.description}
+          actions={
+            <YourProjectAction
+              onDeleteTap={() => handleDeleteProject(data.id)}
+            />
+          }
+        />
+      ))}
+    </GridLayout>
+  ) : (
+    <Empty />
+  )}
+
+  <UploadJDDrawer
+    open={isNewProjectOpen}
+    onClose={isNewProjectToggle.close}
+  />
+</Flex>
+
   );
 }
