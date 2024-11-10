@@ -31,7 +31,7 @@ export default function YourProjectPage() {
 
   const fetchData = async () => {
     try {
-      const result = await axios.get('http://18.142.57.218/get/cv');
+      const result = await axios.get('https://jobfitserver.id.vn/get/cv');
 
       // Assuming result.data contains the array
       const mappedProjects = result.data.map((item) => ({
@@ -81,7 +81,7 @@ export default function YourProjectPage() {
   } = useSearch(projects, handleSearchProjects);
 
   async function handleDeleteProject(id){
-    const result = await  axios.delete(`http://18.142.57.218/get/delete_cv?cv_id=${id}`);
+    const result = await  axios.delete(`https://jobfitserver.id.vn/get/delete_cv?cv_id=${id}`);
     if(result.data.message === "CV deleted successfully"){
       await fetchData();
       successNotify({

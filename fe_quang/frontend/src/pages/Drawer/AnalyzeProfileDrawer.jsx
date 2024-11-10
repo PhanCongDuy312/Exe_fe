@@ -47,7 +47,7 @@ export default function AnalyzeProfileDrawer({ open, onClose, fileNames, jdNames
                 withCloseButton: false,
             });
 
-            const response = await axios.post('http://18.142.57.218/compare_cv_jd', {
+            const response = await axios.post('https://jobfitserver.id.vn/compare_cv_jd', {
                 project_name: projectName,
                 cv_id: selectedCV,
                 jd_id: selectedJD

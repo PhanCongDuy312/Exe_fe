@@ -37,7 +37,7 @@ export default function UploadJDDrawer({ open, onClose }) {
         setIsLoading(true);
 
         try {
-            const response = await axios.post('http://18.142.57.218/upload/jd/', formData, {
+            const response = await axios.post('https://jobfitserver.id.vn/upload/jd/', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
