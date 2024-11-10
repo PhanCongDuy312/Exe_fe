@@ -22,20 +22,34 @@ export default function SharedProjectPage() {
     const successNotify = useNotification({ type: "success" });
     const fetchData = async () => {
         try {
-            const result = await axios.get('https://jobfitserver.id.vn/get/jd');
-
-            // Assuming result.data contains the array
-            const mappedProjects = result.data.map((item) => ({
-                id: item.id,
-                name: item.file_name,
-                description: item.public_url_path,
-            }));
-
-            setProjects(mappedProjects); // Update state with the fetched projects
+          // Retrieve the token from localStorage
+          const token = localStorage.getItem('accessToken');
+          if (!token) {
+            throw new Error('No access token found. Please log in first.');
+          }
+      
+          // Set up headers with the token
+          const headers = {
+            Authorization: `Bearer ${token}`,
+          };
+      
+          // Make the API request with the token in headers
+          const result = await axios.get('https://jobfitserver.id.vn/get/jd', { headers });
+      
+          // Assuming result.data contains the array
+          const mappedProjects = result.data.map((item) => ({
+            id: item.id,
+            name: item.file_name,
+            description: item.public_url_path,
+          }));
+      
+          setProjects(mappedProjects); // Update state with the fetched projects
         } catch (error) {
-            console.error('Error fetching data:', error);
+          console.error('Error fetching data:', error);
+          // Optionally, show an error message to the user
         }
-    };
+      };
+      
 
     useEffect(() => {
 
@@ -70,7 +84,7 @@ export default function SharedProjectPage() {
   return (
     <Flex direction="column" gap={30}>
       <HeadingLayout loading={!currentProjects}>
-        <Title order={2}>{"Những mô tả công việc đã thêm"}</Title>
+        <Title order={2}>{"JDs của bạn"}</Title>
         <Flex gap={15}>
             <Input
                 placeholder={appStrings.language.yourProject.searchPlaceholder}
@@ -88,7 +102,6 @@ export default function SharedProjectPage() {
         </Flex>
       </HeadingLayout>
       <GridLayout
-          title={"JDs gần đây"}
           loading={!currentProjects}
       >
         {currentProjects?.map((data, index) => (

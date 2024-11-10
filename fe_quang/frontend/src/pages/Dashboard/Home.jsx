@@ -41,10 +41,23 @@ export default function HomePage() {
 
   const fetchData = async () => {
     try {
-      const result = await axios.get('https://jobfitserver.id.vn/get/cv');
-      const jds = await axios.get('https://jobfitserver.id.vn/get/jd');
-      const projects = await axios.get('https://jobfitserver.id.vn/get/project');
-
+      // Retrieve the token from localStorage
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        throw new Error('No access token found. Please log in first.');
+      }
+  
+      // Set up headers with the token
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+  
+      // Fetch data with the token in headers
+      const result = await axios.get('https://jobfitserver.id.vn/get/cv', { headers });
+      const jds = await axios.get('https://jobfitserver.id.vn/get/jd', { headers });
+      const projects = await axios.get('https://jobfitserver.id.vn/get/project', { headers });
+  
+      // Map Analyze
       const mappedAnalyze = projects.data.map((item) => ({
         id: item.cv_id,
         name: item.file_name,
@@ -53,40 +66,40 @@ export default function HomePage() {
         projectId: item.project_id,
         keywords: item.matching_keyword_dict,
       }));
+  
       // Map JDs
       const mappedJDs = jds.data.map((item) => ({
         id: item.id,
         name: item.file_name,
         description: item.public_url_path,
       }));
-
+  
       // Map CVs
       const mappedProjects = result.data.map((item) => ({
         id: item.id,
         name: item.file_name,
         description: item.public_url_path,
       }));
-
+  
       // Extract names for state
-      const cvOptions = mappedProjects.map(item => ({
-        value: item.id,  // Use id as the value
-        label: item.name  // Use file_name as the label
+      const cvOptions = mappedProjects.map((item) => ({
+        value: item.id, // Use id as the value
+        label: item.name, // Use file_name as the label
       }));
-      const jdOptions = mappedJDs.map(item => ({
-        value: item.id,  // Use id as the value
-        label: item.name  // Use file_name as the label
+      const jdOptions = mappedJDs.map((item) => ({
+        value: item.id, // Use id as the value
+        label: item.name, // Use file_name as the label
       }));
-
-      const analyzeOptions = mappedAnalyze.map(item => ({
+  
+      const analyzeOptions = mappedAnalyze.map((item) => ({
         id: item.projectId,
-        // value: item.id,
         title: item.name,
         description: item.keywords,
-        alias: item.score
-      }))
-
+        alias: item.score,
+      }));
+  
       console.log(analyzeOptions);
-
+  
       // Update state
       setFileNames(cvOptions);
       setJDNames(jdOptions);
@@ -96,7 +109,7 @@ export default function HomePage() {
       // Optionally, show an error message to the user
     }
   };
-
+  
   useEffect(() => {
 
 

@@ -31,20 +31,35 @@ export default function YourProjectPage() {
 
   const fetchData = async () => {
     try {
-      const result = await axios.get('https://jobfitserver.id.vn/get/cv');
-
+      // Retrieve the token from localStorage
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        throw new Error('No access token found. Please log in first.');
+      }
+  
+      // Set up headers with the token
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+  
+      // Make the API request with the token in headers
+      const result = await axios.get('https://jobfitserver.id.vn/get/cv', { headers });
+  
       // Assuming result.data contains the array
       const mappedProjects = result.data.map((item) => ({
         id: item.id,
         name: item.file_name,
         description: item.public_url_path,
       }));
-      console.log(mappedProjects);
+  
+      console.log(mappedProjects); // Log the mapped projects
       setProjects(mappedProjects); // Update state with the fetched projects
     } catch (error) {
       console.error('Error fetching data:', error);
+      // Optionally, show an error message to the user
     }
   };
+  
   useEffect(() => {
 
 

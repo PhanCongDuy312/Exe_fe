@@ -27,70 +27,71 @@ export default function UploadJDDrawer({ open, onClose }) {
 
     const handleUploadCV = async () => {
         if (!selectedFile) {
-            errorNotify({message:'Không có file nào được chọn!' , title:"Thông báo"});
-            return;
+          errorNotify({ message: 'Không có file nào được chọn!', title: "Thông báo" });
+          return;
         }
-
+      
         const formData = new FormData();
         formData.append('file', selectedFile);
-
+      
         setIsLoading(true);
-
+      
         try {
-            const response = await axios.post('https://jobfitserver.id.vn/upload/jd/', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            successNotify({message: "Tải lên thành công", title: "Thông báo"})
-            console.log('File uploaded successfully:', response.data);
-            onClose(); // Close the drawer after successful upload
+          // Retrieve the token from localStorage
+          const token = localStorage.getItem('accessToken');
+          if (!token) {
+            throw new Error('No access token found. Please log in first.');
+          }
+      
+          // Make the API request with the token in headers
+          const response = await axios.post('https://jobfitserver.id.vn/upload/jd/', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Authorization': `Bearer ${token}`,
+              'accept': 'application/json',
+            },
+          });
+      
+          successNotify({ message: "Tải lên thành công", title: "Thông báo" });
+          console.log('File uploaded successfully:', response.data);
+          onClose(); // Close the drawer after successful upload
         } catch (error) {
-            console.error('Error uploading file:', error);
-            errorNotify({message:'Chỉ có thể upload file: PDF, DOCX', title: "Thông báo"});
+          console.error('Error uploading file:', error);
+          errorNotify({ message: 'Chỉ có thể upload file: PDF, DOCX', title: "Thông báo" });
         } finally {
-            setIsLoading(false);
+          setIsLoading(false);
         }
-    };
+      };
+      
 
     return (
-        <Drawer opened={open} onClose={onClose} size="100%" position="right">
-            <Container size="xs" h={50} mt="md">
-                <Flex
-                    gap="lg"
-                    justify="center"
-                    align="center"
-                    direction="column"
-                    wrap="wrap"
-                >
-                    <Title order={1} style={{ width: "100%" }}>
-                        {"Thêm JD của bạn"}
-                    </Title>
-                    <Input.Wrapper
-                        style={{ width: "100%" }}
-                        label="Đặt tên cho JD của bạn" >
-                        <Input placeholder="JD Công Ty FPT " />
-                    </Input.Wrapper>
-                    <FileInput
-                        label={"Upload JD của bạn tại đây"}
-                        style={{ width: "100%" }}
-                        required
-                        onChange={handleInputChange}
-                    />
-                </Flex>
-                <Flex justify="flex-end" gap="md" style={{ marginTop: "20px" }}>
-                    <Button variant="default" onClick={onClose}>
-                        {appStrings.language.btn.cancel}
-                    </Button>
-                    <Button
-                        onClick={handleUploadCV}
-                        loading={isLoading}
-                        disabled={!selectedFile}
-                    >
-                        {"Thêm"}
-                    </Button>
-                </Flex>
-            </Container>
-        </Drawer>
+<Drawer opened={open} onClose={onClose} size="100%" position="right">
+  <Container size="xs" h={50} mt="md">
+    <Flex gap="lg" justify="center" align="center" direction="column" wrap="wrap">
+      <Title order={1} style={{ width: "100%" }}>{"Thêm JD của bạn"}</Title>
+      <Input.Wrapper style={{ width: "100%" }} label="Đặt tên cho JD của bạn">
+        <Input placeholder="JD Công Ty FPT " />
+      </Input.Wrapper>
+      <FileInput
+        label={"Upload JD của bạn tại đây"}
+        style={{ width: "100%" }}
+        required
+        onChange={handleInputChange} // Assumes `handleInputChange` sets `selectedFile`
+      />
+    </Flex>
+    <Flex justify="flex-end" gap="md" style={{ marginTop: "20px" }}>
+      <Button variant="default" onClick={onClose}>
+        {appStrings.language.btn.cancel}
+      </Button>
+      <Button
+        onClick={handleUploadCV}
+        loading={isLoading}
+        disabled={!selectedFile}
+      >
+        {"Thêm"}
+      </Button>
+    </Flex>
+  </Container>
+</Drawer>
     );
 }

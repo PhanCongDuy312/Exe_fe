@@ -33,7 +33,7 @@ const navbarItems = [
     to: "/dashboard",
   },
   {
-    label: "Hồ sơ công việc của bạn",
+    label: "Hồ sơ công việc",
     icon: <IconFileCv size="1rem" />,
     activeIcon: <IconFileCv size="1rem" />,
     to: "/dashboard/your-project",
