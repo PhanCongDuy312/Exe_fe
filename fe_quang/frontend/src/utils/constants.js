@@ -2,7 +2,7 @@ export const googleClientId =
   "765198139881-0vdveqqf338q0g9nvkclphnockf9f35n.apps.googleusercontent.com";
 
 export const baseUrl = "https://cvez-team-cvez-server.hf.space";
-// export const baseUrl = "http://localhost:8000";
+// export const baseUrl = "https://jobfitserver.id.vn";
 
 export const apiUrls = {
   // Auth

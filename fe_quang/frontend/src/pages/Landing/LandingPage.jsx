@@ -1,4 +1,5 @@
 import style from "./style.module.css";
+import axios from 'axios';
 import {
   Flex,
   Title,
@@ -46,14 +47,72 @@ export default function LandingPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    // Handle login logic
-    console.log('Logging in with:', username, password);
-  };
 
-  const handleRegister = () => {
-    // Handle register logic
-    console.log('Registering with:', username, password);
+  const handleLogin = async (username, password) => {
+    try {
+      console.log("Username:", username);
+      console.log("Password:", password);
+  
+      // API call with username and password as form data
+      const result = await axios.post(
+        'https://jobfitserver.id.vn/login',
+        new URLSearchParams({
+          grant_type: 'password',
+          username: username,
+          password: password,
+          scope: '',
+          client_id: 'string',
+          client_secret: 'string',
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            accept: 'application/json',
+          },
+        }
+      );
+  
+      // Save token to localStorage
+      const accessToken = result.data.access_token;
+      localStorage.setItem('accessToken', accessToken);
+  
+      navigate('/dashboard')
+      return result.data; // Return token or other data if needed
+    } catch (error) {
+      console.error('Login failed:', error.response?.data || error.message);
+      alert('Login failed: ' + (error.response?.data?.detail || error.message));
+      throw error; // Optional: Throw error to handle it higher in the component
+    }
+  };
+  
+
+  const handleRegister = async (username, password) => {
+    try {
+      console.log("Registering with:", username, password);
+  
+      // API call to register the user
+      const result = await axios.post(
+        'https://jobfitserver.id.vn/register',
+        {
+          username: username,
+          password: password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            accept: 'application/json',
+          },
+        }
+      );
+  
+      alert("Registration successful! You can now log in.");
+      console.log("Registration successful:", result.data);
+      return result.data; // Return any necessary data if needed
+    } catch (error) {
+      console.error("Registration failed:", error.response?.data || error.message);
+      alert("Registration failed: " + (error.response?.data?.detail || error.message));
+      throw error; // Optional: Handle error in a higher-level component if needed
+    }
   };
   useEffect(() => {
     const handleScroll = () => {
@@ -84,6 +143,8 @@ export default function LandingPage() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+
   const scrollToTop = () => {
     // hàm xử lý sự kiện click vào nút up-arrow
     window.scrollTo({
@@ -94,59 +155,67 @@ export default function LandingPage() {
 
   return (
       <>
-        <Modal opened={open} onClose={() => setOpened(false)} title="Authentication" size="lg" padding="xl">
-          <Paper padding="md" shadow="xs">
-            <Stack>
-              <Text align="center" size="lg" weight={500}>
-                Please {selectedOption === 'login' ? 'Login' : 'Register'}
-              </Text>
-              <RadioGroup
-                  value={selectedOption}
-                  onChange={setSelectedOption}
-                  orientation="horizontal"
-                  spacing="xl"
-                  position="center"
-              >
-                <Group>
-                  <Radio value="login" label="Login" />
-                  <Radio value="register" label="Register" />
-                </Group>
-              </RadioGroup>
+<Modal opened={open} onClose={() => setOpened(false)} title="Authentication" size="lg" padding="xl">
+  <Paper padding="md" shadow="xs">
+    <Stack>
+      <Text align="center" size="lg" weight={500}>
+        Please {selectedOption === 'login' ? 'Login' : 'Register'}
+      </Text>
+      <RadioGroup
+        value={selectedOption}
+        onChange={setSelectedOption}
+        orientation="horizontal"
+        spacing="xl"
+        position="center"
+      >
+        <Group>
+          <Radio value="login" label="Login" />
+          <Radio value="register" label="Register" />
+        </Group>
+      </RadioGroup>
 
-              <TextInput
-                  label="Username"
-                  placeholder="Enter your username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-              />
-              <PasswordInput
-                  label="Password"
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-              />
+      <TextInput
+        label="Username"
+        placeholder="Enter your username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        required
+      />
+      <PasswordInput
+        label="Password"
+        placeholder="Enter your password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
 
-              <Group position="center" grow>
-                <Button
-                    fullWidth
-                    variant="outline"
-                    onClick={selectedOption === 'login' ? handleLogin : handleRegister}
-                >
-                  {selectedOption === 'login' ? 'Login' : 'Register'}
-                </Button>
-                <Button
-                    fullWidth
-                    variant="outline"
-                    onClick={() => navigate('/dashboard')}
-                >
-                  Skip To Demo
-                </Button>
-              </Group>
-            </Stack>
-          </Paper>
-        </Modal>
+      <Group position="center" grow>
+        <Button
+          fullWidth
+          variant="outline"
+          onClick={() => {
+            if (selectedOption === 'login') {
+              handleLogin(username, password); // Call handleLogin with username and password
+            } else {
+              handleRegister(username, password); // Call handleRegister with username and password
+            }
+          }}
+        >
+          {selectedOption === 'login' ? 'Login' : 'Register'}
+        </Button>
+        <Button
+          fullWidth
+          variant="outline"
+          onClick={() => navigate('/dashboard')}
+        >
+          Skip To Demo
+        </Button>
+      </Group>
+    </Stack>
+  </Paper>
+</Modal>
+
+
 
         <Fragment>
           <nav className={`${style.nav} ${sticky ? style.darknav : ""}`}>
